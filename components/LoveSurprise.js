@@ -1,0 +1,119 @@
+import { useMemo, useState } from "react";
+import styles from "../styles/LoveSurprise.module.css";
+
+const mensagensBase = [
+  "Tudo passa, até uva passa",
+  "Você é forte até nos dias em que não se sente assim.",
+  "Seu sorriso ilumina o mundo de quem te ama.",
+  "Vai passar, e você vai sair ainda mais incrível disso.",
+  "Respira fundo: você não está sozinha, nunca esteve.",
+  "Você merece coisas lindas, leves e verdadeiras.",
+  "Um passo de cada vez já é vitória.",
+  "Você é amada exatamente do jeitinho que é.",
+  "Hoje pode estar pesado, mas seu coração é gigante.",
+  "Dias melhores estão chegando para te abraçar.",
+  "Sua luz é única, nunca deixe de brilhar.",
+  "Você é mais forte do que imagina, e mais amada do que acredita.",
+  "A sua paz vale mais do que qualquer insistência do passado.",
+  "Toda vez que você se prioriza, você se fortalece.",
+  "Você é inteira, valiosa e suficiente.",
+  "Dias difíceis não apagam a mulher incrível que você é."
+];
+
+const golfinhos = [
+  { left: "8%", delay: "0s" },
+  { left: "28%", delay: "0.5s" },
+  { left: "50%", delay: "1s" },
+  { left: "72%", delay: "1.5s" },
+];
+
+const elementosDivertidos = [
+  { icon: "✨", left: "6%", delay: "0s", duration: "5.5s" },
+  { icon: "🎉", left: "16%", delay: "1s", duration: "6s" },
+  { icon: "🌈", left: "30%", delay: "0.5s", duration: "6.5s" },
+  { icon: "🫶", left: "44%", delay: "1.5s", duration: "5.8s" },
+  { icon: "😄", left: "56%", delay: "2s", duration: "6.2s" },
+  { icon: "💫", left: "70%", delay: "1.2s", duration: "5.9s" },
+  { icon: "🎶", left: "84%", delay: "2.2s", duration: "6.4s" },
+];
+
+function embaralharMensagens(mensagens) {
+  return [...mensagens]
+    .map((mensagem) => ({ mensagem, ordem: Math.random() }))
+    .sort((a, b) => a.ordem - b.ordem)
+    .map((item) => item.mensagem);
+}
+
+function LoveSurprise() {
+  const [cliques, setCliques] = useState(0);
+  const mostrarSurpresa = cliques > 0;
+
+  const mensagens = useMemo(() => embaralharMensagens(mensagensBase), [cliques]);
+
+  return (
+    <main className={styles.page}>
+      <div className={styles.glowLeft} />
+      <div className={styles.glowRight} />
+
+      {mostrarSurpresa && (
+        <div className={styles.elementosDivertidos}>
+          {elementosDivertidos.map((item, index) => (
+            <span
+              key={`${cliques}-diversao-${index}`}
+              className={styles.elemento}
+              style={{
+                left: item.left,
+                "--delay": item.delay,
+                "--duration": item.duration,
+              }}
+            >
+              {item.icon}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <section className={styles.card}>
+        <h1 className={styles.title}>Para aninha17</h1>
+        <button className={styles.button} onClick={() => setCliques((valor) => valor + 1)}>
+          {mostrarSurpresa ? "Quero mais mensagens 💌" : "Clique para receber carinho"}
+        </button>
+
+        {mostrarSurpresa && (
+          <div className={styles.surpresaArea}>
+            <div className={styles.fraseAmor}>
+              <span className={styles.heart}>❤️</span>
+              <strong>Eu te amo</strong>
+            </div>
+
+            <div className={styles.gridMensagens}>
+              {mensagens.map((mensagem, index) => (
+                <article
+                  key={`${cliques}-mensagem-${index}`}
+                  className={styles.cardMensagem}
+                  style={{ "--delay": `${index * 0.08}s` }}
+                >
+                  {mensagem}
+                </article>
+              ))}
+            </div>
+
+            <div className={styles.piscinaGolfinhos}>
+              {golfinhos.map((golfinho, index) => (
+                <span
+                  key={`${cliques}-golfinho-${index}`}
+                  className={styles.golfinho}
+                  style={{ left: golfinho.left, "--delay": golfinho.delay }}
+                >
+                  🐬
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
+    </main>
+  );
+}
+
+export default LoveSurprise;

@@ -1,0 +1,236 @@
+.page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 224, 230, 0.7) 0, transparent 35%),
+    radial-gradient(circle at 84% 22%, rgba(181, 234, 255, 0.55) 0, transparent 34%),
+    linear-gradient(145deg, #fff8ee 0%, #e5f7ff 52%, #eafff0 100%);
+  font-family: "Baloo 2", "Comic Sans MS", cursive;
+}
+
+.glowLeft,
+.glowRight {
+  position: absolute;
+  width: min(34vw, 300px);
+  height: min(34vw, 300px);
+  border-radius: 999px;
+  filter: blur(14px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.glowLeft {
+  left: -9%;
+  top: -8%;
+  background: #ffd8de;
+}
+
+.glowRight {
+  right: -8%;
+  bottom: -10%;
+  background: #b8f4ff;
+}
+
+.card {
+  position: relative;
+  z-index: 2;
+  width: min(980px, 100%);
+  border-radius: 28px;
+  padding: 28px clamp(16px, 3vw, 40px) 30px;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow:
+    0 20px 44px rgba(16, 35, 62, 0.17),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(6px);
+}
+
+.title {
+  margin: 0;
+  text-align: center;
+  color: #0f3557;
+  line-height: 1.1;
+  letter-spacing: 0.2px;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+}
+
+.subtitle {
+  margin: 12px auto 0;
+  width: min(700px, 100%);
+  text-align: center;
+  color: #36556e;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+}
+
+.button {
+  display: block;
+  margin: 24px auto 0;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff617f, #ff925e);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 10px 22px rgba(255, 90, 120, 0.35);
+}
+
+.button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 24px rgba(255, 90, 120, 0.44);
+}
+
+.button:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.surpresaArea {
+  margin-top: 24px;
+}
+
+.fraseAmor {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #d91d66;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+.heart {
+  display: inline-block;
+  animation: heartbeat 850ms ease-in-out infinite;
+}
+
+.gridMensagens {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.cardMensagem {
+  border-radius: 16px;
+  padding: 14px 14px 13px;
+  background: #fff;
+  color: #133f61;
+  box-shadow: 0 10px 18px rgba(23, 59, 93, 0.11);
+  opacity: 0;
+  transform: translateY(12px) scale(0.96);
+  animation: riseIn 420ms ease forwards;
+  animation-delay: var(--delay);
+}
+
+.piscinaGolfinhos {
+  position: relative;
+  height: 130px;
+  margin-top: 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 2px solid rgba(121, 212, 255, 0.45);
+  background:
+    linear-gradient(to top, rgba(74, 171, 226, 0.25), rgba(221, 247, 255, 0.78)),
+    repeating-linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.18) 0,
+      rgba(255, 255, 255, 0.18) 12px,
+      rgba(191, 233, 255, 0.16) 12px,
+      rgba(191, 233, 255, 0.16) 24px
+    );
+}
+
+.golfinho {
+  position: absolute;
+  bottom: 8px;
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  animation: jump 2.2s ease-in-out infinite;
+  animation-delay: var(--delay);
+  filter: drop-shadow(0 4px 4px rgba(37, 98, 142, 0.35));
+}
+
+.elementosDivertidos {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.elemento {
+  position: absolute;
+  bottom: -40px;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  animation: floatParty var(--duration) linear infinite;
+  animation-delay: var(--delay);
+  opacity: 0.9;
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes riseIn {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes jump {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-8deg);
+  }
+
+  32% {
+    transform: translateY(-72px) rotate(8deg);
+  }
+
+  54% {
+    transform: translateY(-18px) rotate(-4deg);
+  }
+}
+
+@keyframes floatParty {
+  from {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 0.95;
+  }
+
+  100% {
+    transform: translateY(-112vh) rotate(22deg);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .card {
+    border-radius: 20px;
+    padding: 22px 14px;
+  }
+
+  .button {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .piscinaGolfinhos {
+    height: 115px;
+  }
+}
