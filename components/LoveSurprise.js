@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "../styles/LoveSurprise.module.css";
 
 const mensagensBase = [
@@ -44,16 +44,74 @@ function embaralharMensagens(mensagens) {
     .map((item) => item.mensagem);
 }
 
+function criarChuvaCoracoes(quantidade) {
+  return Array.from({ length: quantidade }, (_, index) => ({
+    id: `${Date.now()}-${index}-${Math.random()}`,
+    left: `${Math.random() * 100}%`,
+    delay: `${Math.random() * 0.35}s`,
+    duration: `${1.9 + Math.random() * 1.3}s`,
+    size: `${1.1 + Math.random() * 1.2}rem`,
+    drift: `${Math.round(Math.random() * 120 - 60)}px`,
+  }));
+}
+
 function LoveSurprise() {
   const [cliques, setCliques] = useState(0);
+  const [chuvasCoracao, setChuvasCoracao] = useState([]);
+  const timeoutsRef = useRef([]);
   const mostrarSurpresa = cliques > 0;
 
   const mensagens = useMemo(() => embaralharMensagens(mensagensBase), [cliques]);
+
+  function dispararChuvaCoracoes() {
+    const id = `${Date.now()}-${Math.random()}`;
+    const novaChuva = { id, coracoes: criarChuvaCoracoes(28) };
+
+    setChuvasCoracao((chuvas) => [...chuvas, novaChuva]);
+
+    const timeoutId = setTimeout(() => {
+      setChuvasCoracao((chuvas) => chuvas.filter((chuva) => chuva.id !== id));
+    }, 3400);
+
+    timeoutsRef.current.push(timeoutId);
+  }
+
+  function handleClickCarinho() {
+    setCliques((valor) => valor + 1);
+    dispararChuvaCoracoes();
+  }
+
+  useEffect(() => {
+    return () => {
+      timeoutsRef.current.forEach((timeoutId) => clearTimeout(timeoutId));
+      timeoutsRef.current = [];
+    };
+  }, []);
 
   return (
     <main className={styles.page}>
       <div className={styles.glowLeft} />
       <div className={styles.glowRight} />
+
+      {chuvasCoracao.map((chuva) => (
+        <div key={chuva.id} className={styles.chuvaCoracoes}>
+          {chuva.coracoes.map((coracao) => (
+            <span
+              key={coracao.id}
+              className={styles.coracaoCaindo}
+              style={{
+                left: coracao.left,
+                "--delay": coracao.delay,
+                "--duration": coracao.duration,
+                "--size": coracao.size,
+                "--drift": coracao.drift,
+              }}
+            >
+              ❤️
+            </span>
+          ))}
+        </div>
+      ))}
 
       {mostrarSurpresa && (
         <div className={styles.elementosDivertidos}>
@@ -75,7 +133,7 @@ function LoveSurprise() {
 
       <section className={styles.card}>
         <h1 className={styles.title}>Para aninha17</h1>
-        <button className={styles.button} onClick={() => setCliques((valor) => valor + 1)}>
+        <button className={styles.button} onClick={handleClickCarinho}>
           {mostrarSurpresa ? "Quero mais mensagens 💌" : "Clique para receber carinho"}
         </button>
 
@@ -88,13 +146,15 @@ function LoveSurprise() {
 
             <div className={styles.gridMensagens}>
               {mensagens.map((mensagem, index) => (
-                <article
+                <button
+                  type="button"
                   key={`${cliques}-mensagem-${index}`}
                   className={styles.cardMensagem}
                   style={{ "--delay": `${index * 0.08}s` }}
+                  onClick={dispararChuvaCoracoes}
                 >
                   {mensagem}
-                </article>
+                </button>
               ))}
             </div>
 
